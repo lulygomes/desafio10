@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import { FiEdit3, FiTrash } from 'react-icons/fi';
 
+import api from '../../services/api';
+
 import { Container } from './styles';
 
 interface IFoodPlate {
@@ -27,15 +29,15 @@ const Food: React.FC<IProps> = ({
   const [isAvailable, setIsAvailable] = useState(food.available);
 
   async function toggleAvailable(): Promise<void> {
-    setIsAvailable(!food.available);
-    // eslint-disable-next-line no-param-reassign
-    food = { ...food, available: !food.available };
+    await api.put(`/foods/${food.id}`, {
+      ...food,
+      available: !isAvailable,
+    });
+    setIsAvailable(!isAvailable);
   }
 
   function setEditingFood(): void {
-    // TODO - SET THE ID OF THE CURRENT ITEM TO THE EDITING FOOD AND OPEN MODAL
     handleEditFood(food);
-    console.log(food);
   }
 
   return (
